@@ -1,0 +1,17 @@
+defmodule Blogs do
+	# Extracts title and URL from each given article element
+	def default_wp({_tag, _attrs, content}) do
+		{_, attrs, [title]} = Floki.find(content, "a") |> List.first()
+		{_, url} = Enum.find(attrs, fn {type, _} -> type == "href" end)
+		{title, url}
+	end
+
+	# CSS path to list articles from index page
+	@wp_path "article"
+
+  def all() do
+    [
+			# {"Blog title", "https://blog-url.com/", @wp_path, &Blogs.default_wp/1}
+    ]
+  end
+end
